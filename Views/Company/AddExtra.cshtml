@@ -1,0 +1,56 @@
+﻿@model Company
+@{
+	ViewData["Title"] = "New Extra Field";
+}
+<h2>@ViewData["Title"] </h2>
+<hr />
+<div class="row">
+	<div class="col-md-4">
+		<form asp-action="AddExtra" method="post">
+			<div asp-validation-summary="ModelOnly" class="text-danger"></div>
+			<div class="form-group">
+				<label asp-for="ExtraField" class="control-label"></label>
+				<input asp-for="ExtraField" class="form-control" />
+				<span asp-validation-for="ExtraField" class="text-danger"></span>
+			</div>
+			<div class="form-group">
+				<button class="btn btn-primary" type="submit">Save</button>
+				<a asp-action="Index" class="btn btn-info">Back to List</a>
+			</div>
+		</form>
+	</div>
+</div>
+<div>
+	<a asp-action="Index">Back to List</a>
+</div>
+@section Scripts {
+	@{
+		await Html.RenderPartialAsync("_ValidationScriptsPartial");
+	}
+	<script>
+        $(document).ready(function () {
+            $("#submitButton").click(function () {
+                var description = $("#ExtraField").val();
+                var data = {
+                    description: description
+                };
+
+                $.ajax({
+                    type: "POST",
+                    url: "/Company/AddExtra",
+                    data: data,
+                    success: function (response) {
+                        if (response.success) {
+                            alert(response.message);
+                        } else {
+                            alert("An error occurred while adding data.");
+                        }
+                    },
+                    error: function () {
+                        alert("An error occurred while communicating with the server.");
+                    }
+                });
+            });
+        });
+	</script>
+}
